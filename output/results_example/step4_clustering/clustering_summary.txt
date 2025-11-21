@@ -1,0 +1,19 @@
+THEMATIC CLUSTERING SUMMARY
+===========================
+
+Total Reflections Analyzed: 3
+Number of Themes Identified: 3
+
+THEME DISTRIBUTION:
+-------------------
+1. Critical Thinking (33.33%)
+   - Reflections focused on developing critical evaluation skills when using AI
+
+2. Ethical Considerations (33.33%)
+   - Discussions about ethical implications and responsible AI use
+
+3. Practical Applications (33.33%)
+   - Focus on practical use cases and skill development
+
+This is example output generated from dummy data for demonstration purposes.
+

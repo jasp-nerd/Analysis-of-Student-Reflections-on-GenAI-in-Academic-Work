@@ -1,0 +1,5 @@
+id,text,keywords,sentiment,sentiment_category,sentiment_explanation
+R001,"This is an example reflection about learning with AI tools...","AI tools, learning process, critical thinking",0.65,positive,"The reflection shows positive engagement with learning"
+R002,"Another example reflection discussing challenges and benefits...","challenges, benefits, ethical considerations",0.15,neutral,"Balanced discussion of both positive and negative aspects"
+R003,"A third sample reflection about practical applications...","practical applications, skill development, future impact",0.75,positive,"Enthusiastic about future possibilities and skill growth"
+

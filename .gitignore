@@ -61,13 +61,20 @@ Thumbs.db
 *.bak
 *.orig
 
-# Data - excluding all input data files
-data/reflections/*.txt
-data/reflections/*.csv
-data/reflections/*.json
+# Data - keep example dummy data, exclude real data files
+data/reflections/reflections.txt
+data/reflections/reflections.csv
+data/reflections/reflections_cleaned.csv
 
-# Output - excluding all generated results
-output/
+# Output - exclude real data, keep example data and analysis images
+output/results/
+output/audit/
+output/analysis/*.txt
+output/analysis/*.json
+# Keep example folders and analysis images
+!output/results_example/
+!output/analysis_example/
+!output/analysis/*.png
 
 # Documentation builds
 docs/_build/

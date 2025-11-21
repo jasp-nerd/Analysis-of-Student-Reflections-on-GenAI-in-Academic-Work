@@ -1,0 +1,39 @@
+QUALITATIVE ANALYSIS REPORT
+===========================
+Generated: [Date/Time]
+
+SUMMARY STATISTICS
+------------------
+Total Reflections: 3
+Total Keywords Extracted: 9
+Average Keywords per Reflection: 3.0
+Unique Keywords: 9
+
+SENTIMENT ANALYSIS
+------------------
+Positive: 2 (66.67%)
+Neutral: 1 (33.33%)
+Negative: 0 (0.00%)
+
+Average Sentiment Score: 0.52
+
+THEMATIC CLUSTERS
+-----------------
+Number of Themes: 3
+
+Theme Distribution:
+1. Critical Thinking - 33.33%
+2. Ethical Considerations - 33.33%
+3. Practical Applications - 33.33%
+
+TOP KEYWORDS ACROSS ALL REFLECTIONS
+-----------------------------------
+1. critical thinking
+2. AI tools
+3. ethical considerations
+4. learning process
+5. practical applications
+
+This is example output generated from dummy data for demonstration purposes.
+The actual analysis will be based on your real reflection data.
+
