@@ -1,19 +1,44 @@
-THEMATIC CLUSTERING SUMMARY
-===========================
+Thematic Clustering Results
+======================================================================
 
-Total Reflections Analyzed: 3
-Number of Themes Identified: 3
+Total reflections analyzed: 5
+Number of themes identified: 5
+Method: Two-pass LLM clustering
 
-THEME DISTRIBUTION:
--------------------
-1. Critical Thinking (33.33%)
-   - Reflections focused on developing critical evaluation skills when using AI
+======================================================================
 
-2. Ethical Considerations (33.33%)
-   - Discussions about ethical implications and responsible AI use
+THEME 1: Source Verification and Citation Issues
+Definition: A major concern across reflections is the need to check every reference that AI supplies, as many citations are fabricated, incomplete, or mis-attributed. The effort required to confirm the existence and relevance of sources offsets some of the time-saving benefits of AI.
+Reflections assigned: 1 (20.0%)
+Keywords: fabricated references, citation checking, source validation, false bibliography, reference accuracy, verification workload
+Example: "Working on these assignments taught me a lot about generative AI's capabilities and limitations. At..."
+----------------------------------------------------------------------
 
-3. Practical Applications (33.33%)
-   - Focus on practical use cases and skill development
+THEME 2: Critical Thinking and Learning Enhancement
+Definition: Engaging with AI outputs forced students to compare generated text with original literature, deepening their understanding of the material. The process promoted more active reading and encouraged reflective evaluation of both AI and their own knowledge.
+Reflections assigned: 1 (20.0%)
+Keywords: critical evaluation, deepened understanding, reflective learning, comparative analysis, active reading, metacognition
+Example: "My perspective on AI in academic work has evolved significantly. At the start, I viewed these tools w..."
+----------------------------------------------------------------------
 
-This is example output generated from dummy data for demonstration purposes.
+THEME 3: Ethical and Attitudinal Concerns toward AI Use
+Definition: Reflections reveal mixed feelings about academic integrity, personal bans, and disciplinary norms surrounding AI. Some students view AI as a threat to independent thought, while others see it as a permissible tool when used responsibly.
+Reflections assigned: 1 (20.0%)
+Keywords: academic integrity, ethical concerns, personal bans, acceptability, authorial authenticity, discipline policies
+Example: "These assignments gave me practical experience with AI tools like Perplexity and ChatGPT. Initially,..."
+----------------------------------------------------------------------
+
+THEME 4: Academic Utility – Drafting, Summarizing, and Idea Generation
+Definition: Students found AI useful for producing outlines, drafts, concise summaries, and for brainstorming new angles on a topic. These functions helped them overcome writer's block and structure their arguments more efficiently.
+Reflections assigned: 1 (20.0%)
+Keywords: drafting, summarization, brainstorming, outline creation, idea generation, structure, writing assistance
+Example: "Through experimenting with generative AI, I discovered both its strengths and serious weaknesses. Th..."
+----------------------------------------------------------------------
+
+THEME 5: Reliability and Accuracy of AI-Generated Content
+Definition: Students repeatedly noted that AI outputs can be both impressively coherent and strikingly erroneous. While the language often appears scholarly, factual mistakes, oversimplifications, and outright fabrications are common, prompting caution.
+Reflections assigned: 1 (20.0%)
+Keywords: factual errors, hallucinations, misinformation, accuracy, credibility, false statements, content quality
+Example: "The most striking discovery was how confidently AI presents false information. ChatGPT gave me refer..."
+----------------------------------------------------------------------
 

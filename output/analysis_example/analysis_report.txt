@@ -1,38 +1,53 @@
 QUALITATIVE ANALYSIS REPORT
 ===========================
-Generated: [Date/Time]
+Generated: Example Output
+Analysis Pipeline: Keyword Extraction → Sentiment Analysis → Memoing → Thematic Clustering
 
 SUMMARY STATISTICS
 ------------------
-Total Reflections: 3
-Total Keywords Extracted: 9
-Average Keywords per Reflection: 3.0
-Unique Keywords: 9
+Total Reflections Analyzed: 5
+Total Keywords Extracted: 25
+Average Keywords per Reflection: 5.0
+Unique Keywords: 25
 
 SENTIMENT ANALYSIS
 ------------------
-Positive: 2 (66.67%)
-Neutral: 1 (33.33%)
-Negative: 0 (0.00%)
+Positive: 3 (60.0%)
+  - High confidence: 3
+Neutral: 2 (40.0%)
+  - High confidence: 2
+Negative: 0 (0.0%)
 
-Average Sentiment Score: 0.52
+Overall Assessment: Most reflections show positive or balanced perspectives on AI use in academic work,
+acknowledging both benefits and limitations while emphasizing the need for critical evaluation.
 
 THEMATIC CLUSTERS
 -----------------
-Number of Themes: 3
+Number of Themes Identified: 5
+Clustering Method: Two-pass LLM clustering with GPT-4
 
 Theme Distribution:
-1. Critical Thinking - 33.33%
-2. Ethical Considerations - 33.33%
-3. Practical Applications - 33.33%
+1. Source Verification and Citation Issues - 20.0%
+2. Critical Thinking and Learning Enhancement - 20.0%
+3. Ethical and Attitudinal Concerns toward AI Use - 20.0%
+4. Academic Utility – Drafting, Summarizing, and Idea Generation - 20.0%
+5. Reliability and Accuracy of AI-Generated Content - 20.0%
+
+KEY PATTERNS ACROSS THEMES
+--------------------------
+- Fabricated references and source verification emerged as a major concern
+- AI viewed as assistive tool for drafting and brainstorming, not authoritative source
+- Critical thinking emphasized as more important, not less, when using AI
+- Environmental and ethical implications increasingly considered
+- Time saved on initial tasks often offset by verification requirements
 
 TOP KEYWORDS ACROSS ALL REFLECTIONS
 -----------------------------------
-1. critical thinking
-2. AI tools
-3. ethical considerations
-4. learning process
-5. practical applications
+1. source verification (appears in 60% of reflections)
+2. critical evaluation (appears in 60% of reflections)
+3. fabricated references (appears in 40% of reflections)
+4. brainstorming assistance (appears in 40% of reflections)
+5. ethical implications (appears in 40% of reflections)
 
 This is example output generated from dummy data for demonstration purposes.
 The actual analysis will be based on your real reflection data.

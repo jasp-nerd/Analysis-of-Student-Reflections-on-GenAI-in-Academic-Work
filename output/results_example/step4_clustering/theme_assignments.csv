@@ -1,5 +1,7 @@
-id,theme_id,theme_name,confidence
-R001,T001,Critical Thinking,0.85
-R002,T002,Ethical Considerations,0.78
-R003,T003,Practical Applications,0.82
+id,text_preview,assigned_theme,llm_response
+R001,"Working on these assignments taught me a lot about generative AI's capabilities and limitations. At...",Source Verification and Citation Issues,2. Source Verification and Citation Issues
+R002,"These assignments gave me practical experience with AI tools like Perplexity and ChatGPT. Initially,...",Ethical and Attitudinal Concerns toward AI Use,3. Ethical and Attitudinal Concerns toward AI Use
+R003,"Through experimenting with generative AI, I discovered both its strengths and serious weaknesses. Th...","Academic Utility – Drafting, Summarizing, and Idea Generation","4. Academic Utility – Drafting, Summarizing, and Idea Generation"
+R004,"My perspective on AI in academic work has evolved significantly. At the start, I viewed these tools w...",Critical Thinking and Learning Enhancement,1. Critical Thinking and Learning Enhancement
+R005,"The most striking discovery was how confidently AI presents false information. ChatGPT gave me refer...",Reliability and Accuracy of AI-Generated Content,5. Reliability and Accuracy of AI-Generated Content
 

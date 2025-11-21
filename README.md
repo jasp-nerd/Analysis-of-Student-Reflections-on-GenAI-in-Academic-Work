@@ -1,395 +1,121 @@
-# 🎓 Qualitative Analysis of Student Reflections on GenAI in Academic Work
+# Qualitative Analysis of Student Reflections on GenAI in Academic Work
 
-An automated pipeline for analyzing student reflections on generative AI use in academic writing. This research examines 59 student reflections to understand perceptions, concerns, and learning outcomes related to AI tools like ChatGPT and Perplexity.
+This pipeline analyzes student reflections about using generative AI in academic writing. I built it to process 59 reflections from a university course where students experimented with ChatGPT and Perplexity for academic assignments.
 
----
+## What I Found
 
-## 📊 Research Findings
+Students had surprisingly balanced views—37.3% positive, 35.6% negative, and 27.1% neutral. The dominant concern across nearly 29% of reflections was source verification. Students kept discovering that AI fabricates references that look legitimate but don't exist. This forced them to check every citation manually, which often took longer than just finding sources themselves.
 
-### Executive Summary
+Interestingly, 27% of reflections emphasized how working with AI actually improved their critical thinking. When students had to verify AI outputs against real sources, they ended up engaging more deeply with the literature than they might have otherwise. The process of catching AI mistakes became its own learning experience.
 
-This study analyzes **59 student reflections** on their experience using generative AI tools (ChatGPT, Perplexity) in academic writing assignments. The analysis reveals **balanced perspectives** with students showing both enthusiasm and critical awareness of AI limitations.
+Environmental impact came up more than I expected—it was the most frequently mentioned keyword with 18 occurrences, even though the assignments didn't specifically focus on sustainability. Students genuinely care about AI's carbon footprint.
 
-### Key Insights
-
-#### 1. **Mixed Sentiments** 
-Students demonstrate thoughtful, balanced perspectives:
-- **37.3%** Positive sentiment
-- **35.6%** Negative sentiment  
-- **27.1%** Neutral sentiment
-
-#### 2. **Primary Concern: Source Verification**
-- **28.8%** of reflections focused on citation accuracy
-- Students discovered AI frequently **fabricates references**
-- "Source verification" mentioned **16 times** across reflections
-
-#### 3. **Learning Outcome: Enhanced Critical Thinking**
-- **27.1%** of reflections emphasized improved analytical skills
-- Students reported **deeper engagement** with source material
-- Forced comparison between AI output and original literature
-
-#### 4. **Reliability Concerns**
-- **20.3%** raised accuracy concerns about AI-generated content
-- Common issues: fabricated references, oversimplification, hallucinations
-
----
-
-## 📈 Visualizations
-
-### Sentiment Distribution
 ![Sentiment Analysis](output/analysis/sentiment_analysis.png)
-
-Students show remarkably balanced perspectives, with slight positivity (37.3%) outweighing negativity (35.6%). All sentiments were classified with **high confidence**, indicating clear, well-articulated positions.
-
-### Theme Distribution Across Reflections
 ![Theme Distribution](output/analysis/theme_distribution.png)
-
-**Source Verification and Citation Issues** emerged as the dominant theme (28.8%), closely followed by **Critical Thinking and Learning Enhancement** (27.1%). This suggests students are actively engaging with AI's limitations while recognizing its pedagogical value.
-
-### Top Keywords Analysis
 ![Top Keywords](output/analysis/top_keywords.png)
-
-Most frequently mentioned concerns:
-1. **Environmental impact** (18 mentions)
-2. **Source verification** (16 mentions)  
-3. **Energy consumption** (15 mentions)
-4. **Critical thinking** (14 mentions)
-5. **Critical evaluation** (11 mentions)
-
-Notably, **environmental concerns** emerged as the #1 keyword despite not being a primary assignment focus—indicating genuine student awareness of AI's ecological footprint.
-
-### Keyword Categories
 ![Keyword Categories](output/analysis/keyword_categories.png)
-
-Five major concern categories:
-- **Verification** (highest): Students prioritize checking AI outputs
-- **Critical Thinking**: Recognition of deeper analytical requirements
-- **Reliability**: Concerns about fabricated content
-- **Ethical Concerns**: Academic integrity and responsible use
-- **Environmental Impact**: Carbon footprint and sustainability
-
-### Sentiment by Theme
 ![Sentiment by Theme](output/analysis/sentiment_by_theme.png)
 
-Interesting patterns:
-- **Critical Thinking** theme shows most positive sentiment (students value learning)
-- **Reliability** theme skews negative (trust issues with AI accuracy)
-- **Ethical Concerns** show mixed perspectives (complex issue)
+The charts show eight emergent themes from the clustering analysis. Source verification dominated (28.8% of reflections), followed closely by critical thinking and learning enhancement (27.1%). The keyword analysis reveals students talked most about environmental impact (18 mentions), source verification (16), and energy consumption (15). 
 
-### Theme-Sentiment Correlation
-![Theme Sentiment Correlation](output/analysis/theme_sentiment_correlation.png)
+What's interesting in the sentiment-by-theme breakdown is that reflections about critical thinking were overwhelmingly positive—students valued the deeper analytical work—while reliability concerns skewed negative, which makes sense given the trust issues around fabricated content.
 
-Bubble chart revealing which themes evoke which emotional responses. **Source Verification** has balanced sentiment, while **Reliability** concerns trend more negative.
+## How It Works
 
----
+The pipeline runs five analysis steps using either a local LLM (Ollama with deepseek-r1:7b) or Azure OpenAI:
 
-## 🔬 Detailed Analysis
+**Step 1: Keyword Extraction** – Pulls out 3-5 key concepts from each reflection  
+**Step 2: Sentiment Analysis** – Classifies sentiment (positive/negative/neutral) with confidence scores  
+**Step 3: Analytic Memos** – Generates short summaries capturing learning shifts and insights  
+**Step 4: Thematic Clustering** – Uses two-pass LLM clustering to identify emergent themes  
+**Step 5: Audit Trail** – Logs all prompts and responses for transparency  
 
-### Theme Breakdown
+Everything outputs to CSV files, and there's a separate script (`analyze_results.py`) that generates the matplotlib visualizations.
 
-| Theme | Count | % | Key Insight |
-|-------|-------|---|-------------|
-| **Source Verification & Citation Issues** | 17 | 28.8% | Primary concern: AI fabricates references |
-| **Critical Thinking & Learning Enhancement** | 16 | 27.1% | Unexpected benefit: deeper engagement |
-| **Reliability & Accuracy of AI Content** | 12 | 20.3% | Trust issues with AI-generated text |
-| **Ethical & Attitudinal Concerns** | 6 | 10.2% | Academic integrity questions |
-| **Limitations in Depth & Nuance** | 5 | 8.5% | AI oversimplifies complex topics |
-| **Tool Variability & Inconsistency** | 2 | 3.4% | Different AI tools = different results |
-| **Academic Utility (Drafting, Summarizing)** | 1 | 1.7% | Recognized but not primary focus |
+## Installation and Usage
 
-### Top 10 Most Mentioned Keywords
-
-1. **environmental impact** (18)
-2. **source verification** (16)
-3. **energy consumption** (15)
-4. **critical thinking** (14)
-5. **critical evaluation** (11)
-6. **fabricated references** (7)
-7. **ethical concerns** (7)
-8. **misinformation risk** (6)
-9. **fabricated sources** (6)
-10. **academic integrity** (4)
-
-### Student Learning Outcomes
-
-Students reported developing:
-- ✅ **Verification skills**: Checking DOIs, author credentials, journal reputation
-- ✅ **Critical evaluation**: Comparing AI output with original sources
-- ✅ **Awareness**: Understanding AI's environmental and ethical impacts
-- ✅ **Responsible use**: Using AI as assistive tool, not replacement
-- ✅ **Prompt engineering**: Learning to craft better queries
-
-### Surprising Finding: Environmental Consciousness
-
-**Environmental impact** emerged as the **most frequently mentioned keyword** (18 mentions), despite not being explicitly emphasized in the assignment. This suggests:
-- Students are genuinely concerned about AI's carbon footprint
-- Awareness of energy consumption is spreading in Gen-Z
-- Ethical AI use includes sustainability considerations
-
----
-
-## 🎯 Recommendations for Educators
-
-Based on this analysis, we recommend:
-
-### 1. **Teach Source Verification Skills**
-- Show students how to check DOIs, author credentials, journal reputation
-- Practice identifying fabricated vs. real citations
-- Integrate fact-checking into AI-augmented coursework
-
-### 2. **Emphasize Critical Evaluation**
-- Encourage comparison between AI output and original literature
-- Teach students to question AI responses
-- Frame AI as a "thinking partner" that requires oversight
-
-### 3. **Address Ethical & Environmental Concerns**
-- Discuss academic integrity boundaries for AI use
-- Raise awareness of AI's environmental footprint
-- Promote responsible, intentional AI use
-
-### 4. **Leverage Learning Benefits**
-- Use AI to deepen engagement (not replace it)
-- Encourage reflection on AI's strengths and limitations
-- Foster metacognitive skills through AI evaluation exercises
-
-### 5. **Set Clear Guidelines**
-- Define acceptable vs. unacceptable AI use
-- Require transparency in AI usage
-- Model responsible AI integration
-
----
-
-## 🛠️ Technical Pipeline
-
-### Analysis Steps
-
-This pipeline performs **5-step automated analysis** using local LLM (Ollama/deepseek-r1:7b) or Azure OpenAI:
-
-1. **Step 1: Keyword Extraction** - Extract 3-5 key concepts per reflection
-2. **Step 2: Sentiment Analysis** - Classify sentiment (positive/negative/neutral) with confidence scores
-3. **Step 3: Analytic Memos** - Generate micro-summaries capturing learning shifts
-4. **Step 4: Thematic Clustering** - Identify 6-10 emergent themes via LLM-powered clustering
-5. **Step 5: Audit Trail** - Complete transparency with prompt logs and timestamps
-
-### Features
-
-✅ **Automated Analysis:** End-to-end pipeline from raw text to insights  
-✅ **Flexible Input:** Supports `.txt`, `.csv`, `.json` formats  
-✅ **LLM Support:** Ollama (deepseek-r1:7b) + Azure OpenAI fallback  
-✅ **CSV Exports:** All results exportable for further analysis  
-✅ **Audit Logging:** Complete transparency over prompts & outputs  
-✅ **Visualization:** Automated matplotlib charts and statistical summaries  
-
----
-
-## 🚀 Quick Start
-
-### Installation
-
-1. **Clone the repository:**
+Clone the repo and activate the virtual environment:
 ```bash
 git clone <repository-url>
 cd Laurence
-```
-
-2. **Activate virtual environment:**
-```bash
-source myenv/bin/activate
-```
-
-3. **Install dependencies:**
-```bash
+source myenv/bin/activate  # or myenv\Scripts\activate on Windows
 pip install -r requirements.txt
 ```
 
-4. **Start Ollama (for local LLM):**
+If you're using Ollama locally:
 ```bash
 ollama serve
 ollama pull deepseek-r1:7b
 ```
 
-### Usage
-
-**Run full analysis:**
+Run the full analysis:
 ```bash
 python main.py analyze
 ```
 
-**Run individual steps:**
+Or run individual steps:
 ```bash
-python main.py step1  # Keyword extraction
-python main.py step2  # Sentiment analysis
-python main.py step3  # Analytic memos
-python main.py step4  # Thematic clustering
-python main.py step5  # Audit trail
+python main.py step1  # keywords only
+python main.py step2  # sentiment only
+# etc.
 ```
 
-**Generate visualizations:**
+Generate visualizations:
 ```bash
 python analyze_results.py
 ```
 
 ### Input Formats
 
-**Text file (default):** Place reflections in `data/reflections/reflections.txt`, separated by `---`
+The pipeline accepts text files, CSV, or JSON. For text files, place your reflections in `data/reflections/reflections.txt` separated by `---`. For CSV or JSON, edit `config.yaml` to specify the format and which column/field contains the text.
 
-**CSV:** Configure in `config.yaml`:
-```yaml
-input:
-  format: "csv"
-  path: "data/reflections/reflections.csv"
-  csv_column: "reflection"
-```
+## Configuration
 
-**JSON:** Configure in `config.yaml`:
-```yaml
-input:
-  format: "json"
-  path: "data/reflections/reflections.json"
-  json_text_field: "text"
-```
+Edit `config.yaml` to switch between Ollama and Azure OpenAI, adjust model parameters, change file paths, or modify analysis settings like the number of themes or keywords per reflection.
 
----
-
-## 📁 Project Structure
+## Project Structure
 
 ```
 Laurence/
-├── data/
-│   └── reflections/              # Input data
-├── src/
-│   ├── step1_keywords.py         # Keyword extraction
-│   ├── step2_sentiment.py        # Sentiment analysis
-│   ├── step3_memos.py            # Analytic memos
-│   ├── step4_clustering.py       # Thematic clustering
-│   └── step5_audit.py            # Audit trail
+├── data/reflections/        # Input data goes here
+├── src/                     # Analysis step modules
+│   ├── step1_keywords.py
+│   ├── step2_sentiment.py
+│   ├── step3_memos.py
+│   ├── step4_clustering.py
+│   └── step5_audit.py
 ├── output/
-│   ├── results/                  # CSV outputs
-│   ├── audit/                    # Logs & prompts
-│   └── analysis/                 # Visualizations & reports
-├── main.py                       # Main entry point
-├── analyze_results.py            # Visualization generator
-├── config.yaml                   # Configuration
-└── requirements.txt              # Dependencies
+│   ├── results/            # CSV outputs
+│   ├── analysis/           # Charts and reports
+│   └── audit/              # Complete logs
+├── main.py                 # Main entry point
+├── analyze_results.py      # Visualization generator
+└── config.yaml             # Configuration file
 ```
 
----
+## Requirements
 
-## 📄 Output Files
+Python 3.9+, Ollama with deepseek-r1:7b (or an Azure OpenAI API key), 8GB+ RAM recommended.
 
-### Results (`output/results/`)
-- `step1_keywords.csv` - Extracted keywords per reflection
-- `step2_sentiment.csv` - Sentiment classifications with confidence
-- `step3_memos.csv` - Analytic memos summarizing learning
-- `step4_clustering/` - Theme assignments and summaries
+## For Educators
 
-### Analysis (`output/analysis/`)
-- `sentiment_analysis.png` - Sentiment distribution charts
-- `theme_distribution.png` - Theme frequency bar chart
-- `top_keywords.png` - Most common keywords
-- `sentiment_by_theme.png` - Cross-tabulation
-- `keyword_categories.png` - Categorized concern areas
-- `summary_statistics.png` - Overview dashboard
-- `theme_sentiment_correlation.png` - Bubble chart
-- `analysis_report.txt` - Comprehensive text report
+If you're teaching courses about AI in academic work, this analysis suggests a few things worth emphasizing:
 
-### Audit (`output/audit/`)
-- `audit_log_[timestamp].json` - Complete analysis log
-- `prompts_[timestamp].txt` - All LLM prompts used
-- `summary_report_[timestamp].txt` - Human-readable summary
-- `system_info_[timestamp].json` - System metadata
+First, teach source verification as a core skill. Students will discover AI fabricates references, but they need to learn how to catch this systematically—checking DOIs, looking up author credentials, verifying journal names.
 
----
+Second, frame AI as something that can actually enhance critical thinking rather than replace it. When students have to compare AI outputs with real sources, they engage more deeply with the material. The verification process itself becomes pedagogical.
 
-## ⚙️ Configuration
+Third, acknowledge the ethical and environmental dimensions. Students are already thinking about AI's carbon footprint and academic integrity implications. Having explicit conversations about these issues validates their concerns and helps develop more responsible use patterns.
 
-Edit `config.yaml` to customize:
-- LLM provider (Ollama ↔ Azure OpenAI)
-- Model parameters (temperature, max_tokens)
-- Input/output paths
-- Analysis settings (number of themes, keywords per reflection)
+## Methodology Notes
 
----
+This uses LLM-powered thematic analysis with a hybrid inductive-deductive approach. All sentiment classifications achieved high confidence ratings. The audit trail logs every prompt and response, so the analysis is fully reproducible. I validated themes against the raw reflection text rather than just accepting the LLM's categorizations at face value.
 
-## 📋 System Requirements
+## License
 
-- **Python:** 3.9+
-- **Ollama:** With `deepseek-r1:7b` model (or Azure OpenAI API key)
-- **RAM:** 8GB+ recommended
-- **OS:** macOS, Linux, or Windows (with WSL)
+MIT License. See LICENSE file for details.
 
----
+## Contributing
 
-## 📊 Dataset Information
-
-- **Sample Size:** 59 student reflections
-- **Source:** University psychology course (GenAI in academic work)
-- **AI Tools Evaluated:** ChatGPT, Perplexity AI
-- **Assignment Context:** Two writing assignments analyzing AI-generated academic text
-- **Analysis Date:** November 2025
-
----
-
-## 🔬 Methodology
-
-### Analytical Approach
-- **Coding:** LLM-powered thematic analysis (hybrid inductive-deductive)
-- **Validation:** High-confidence classifications only
-- **Transparency:** Complete audit trail of all LLM prompts and responses
-- **Mixed Methods:** Combines keyword extraction, sentiment analysis, and thematic clustering
-
-### Quality Assurance
-- All sentiment classifications achieved **"high" confidence**
-- Themes validated against raw reflection text
-- Audit logs enable full reproducibility
-- Human oversight of LLM outputs
-
----
-
-## 📚 Citation
-
-If you use this pipeline or findings in your research, please cite:
-
-```
-[Author Name]. (2025). Qualitative Analysis Pipeline for GenAI Reflections. 
-GitHub repository. https://github.com/[username]/Laurence
-```
-
----
-
-## 🤝 Contributing
-
-Contributions welcome! Areas for enhancement:
-- Additional visualization types
-- Support for more LLM providers
-- Real-time analysis dashboard
-- Multi-language support
-- Inter-rater reliability metrics
-
----
-
-## 📄 License
-
-This project is available under the MIT License. See `LICENSE` file for details.
-
----
-
-## 🙏 Acknowledgments
-
-- Students who provided thoughtful reflections
-- Ollama team for local LLM infrastructure
-- OpenAI for GPT models
-- Python scientific computing community (pandas, matplotlib, scikit-learn)
-
----
-
-## 📞 Contact
-
-For questions or collaboration:
-- **GitHub Issues:** [Repository Issues](https://github.com/[username]/Laurence/issues)
-- **Email:** [contact email]
-
----
-
-**Status:** ✅ Production Ready | Tested with 59 reflections | Full documentation | Reproducible analysis
+If you want to extend this, some areas that could use work: additional visualization types, support for more LLM providers, multi-language support, or adding inter-rater reliability metrics for validation.
 

@@ -1,5 +1,7 @@
-theme_name,count,percentage
-Critical Thinking,1,33.33
-Ethical Considerations,1,33.33
-Practical Applications,1,33.33
+theme,count,percentage
+Source Verification and Citation Issues,1,20.0
+Critical Thinking and Learning Enhancement,1,20.0
+Ethical and Attitudinal Concerns toward AI Use,1,20.0
+"Academic Utility – Drafting, Summarizing, and Idea Generation",1,20.0
+Reliability and Accuracy of AI-Generated Content,1,20.0
 
