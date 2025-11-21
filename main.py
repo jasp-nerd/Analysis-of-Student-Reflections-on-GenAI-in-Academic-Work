@@ -188,19 +188,6 @@ def analyze(config: str, skip_memory_test: bool):
         console.print("\n[bold cyan]Step 5: Finalizing Audit Trail[/bold cyan]")
         audit.finalize(llm_client)
         
-        # Memory Test (optional)
-        if not skip_memory_test and cfg['memory_test'].get('enabled', True):
-            console.print("\n[bold yellow]Running Memory Test...[/bold yellow]")
-            
-            memory_test = MemoryTest(llm_client, cfg)
-            test_results = memory_test.run_comparison(
-                reflections,
-                sample_size=cfg['memory_test'].get('sample_size', 10)
-            )
-            
-            memory_test_dir = results_dir / "memory_test"
-            memory_test.save_results(test_results, str(memory_test_dir))
-        
         # Success summary
         console.print("\n" + "="*80)
         console.print("[bold green]✅ Analysis Completed![/bold green]")
@@ -244,17 +231,8 @@ def memory_test(config: str, sample_size: Optional[int]):
         reflections = parser.parse()
         parser.validate_reflections(reflections)
         
-        # Run test
-        test = MemoryTest(llm_client, cfg)
-        results = test.run_comparison(reflections, sample_size)
-        
-        # Save results
-        output_base = Path(cfg['output']['base_path'])
-        test_dir = output_base / "memory_test"
-        test.save_results(results, str(test_dir))
-        
-        console.print(f"\n✅ Memory test completed!")
-        console.print(f"📁 Results: {test_dir}/")
+        console.print(f"\n⚠️  Memory test feature has been removed from this version.")
+        console.print(f"Use the main analysis pipeline instead: python main.py analyze")
         
     except Exception as e:
         console.print(f"\n❌ [red]Error: {e}[/red]")
