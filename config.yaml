@@ -1,0 +1,52 @@
+# LLM Configuration
+llm:
+  provider: "ollama"  # Options: "ollama" or "azure"
+  
+  # Ollama settings
+  ollama:
+    model: "gpt-oss:120b-cloud"
+    base_url: "http://localhost:11434"
+    temperature: 0.7
+    
+  # Azure OpenAI settings (optional)
+  azure:
+    api_key: ""  # Set via environment variable AZURE_OPENAI_API_KEY
+    endpoint: ""  # Your Azure endpoint
+    deployment_name: ""  # Your deployment name
+    api_version: "2024-02-15-preview"
+    temperature: 0.7
+
+# Input configuration
+input:
+  format: "csv"  # Options: "txt", "csv", "json"
+  path: "data/reflections/reflections_cleaned.csv"
+  
+  # For txt format: how to split reflections
+  txt_separator: "\n\n---\n\n"  # Double line break + separator
+  
+  # For csv format
+  csv_column: "reflection"  # Column name containing reflection text
+  csv_id_column: "student_id"  # Optional: column for student ID
+  
+  # For json format
+  json_text_field: "text"  # Field containing reflection text
+  json_id_field: "id"  # Optional: field for ID
+
+# Output configuration
+output:
+  base_path: "output"
+  results_dir: "results"
+  audit_dir: "audit"
+  
+# Analysis settings
+analysis:
+  keywords_per_reflection: 5
+  sentiment_categories: ["positive", "negative", "neutral"]
+  memo_sentences: 3
+  target_themes: 8  # Target number of themes (6-10 range)
+  
+# Memory test settings
+memory_test:
+  enabled: true
+  sample_size: 10  # Number of reflections to test (from total)
+

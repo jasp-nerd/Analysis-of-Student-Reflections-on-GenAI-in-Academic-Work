@@ -1,0 +1,21 @@
+# Core dependencies
+pandas==2.3.3
+numpy==2.3.5
+pyyaml==6.0.3
+
+# LLM clients
+ollama==0.6.1
+openai==2.8.1
+
+# Machine learning
+scikit-learn==1.7.2
+scipy==1.16.3
+
+# Visualization
+matplotlib==3.10.7
+seaborn==0.13.2
+
+# Utilities
+tqdm==4.67.1
+python-dotenv==1.2.1
+click==8.3.1
