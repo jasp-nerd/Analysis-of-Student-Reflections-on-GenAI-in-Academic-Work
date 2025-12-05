@@ -1,6 +1,6 @@
 """
 Step 2: Sentiment Analysis
-Goal: Detect general tone (positive, negative, neutral)
+Goal: Analyze student attitudes toward AI and toward the assignment
 """
 from typing import List, Dict, Any
 import pandas as pd
@@ -8,11 +8,17 @@ from rich.progress import track
 
 
 class SentimentAnalyzer:
-    """Analyze sentiment in reflections using LLM"""
+    """Analyze two-dimensional sentiment in reflections using LLM"""
     
     def __init__(self, llm_client, config: Dict[str, Any]):
         self.llm = llm_client
         self.config = config
+        # Get dimensions from config, with fallback to single dimension
+        self.dimensions = config['analysis'].get('sentiment_dimensions', [
+            {'name': 'ai_technology', 'label': 'Attitude toward AI', 'categories': ['positive', 'negative', 'neutral']},
+            {'name': 'assignment', 'label': 'Attitude toward Assignment', 'categories': ['positive', 'negative', 'neutral']}
+        ])
+        # Legacy support
         self.categories = config['analysis'].get('sentiment_categories', 
                                                   ['positive', 'negative', 'neutral'])
     
@@ -22,21 +28,24 @@ class SentimentAnalyzer:
         use_context: bool = False
     ) -> pd.DataFrame:
         """
-        Analyze sentiment for all reflections
+        Analyze sentiment for all reflections across two dimensions:
+        1. Attitude toward AI technology
+        2. Attitude toward the assignment
         
         Args:
             reflections: List of reflection dicts
             use_context: If True, maintain context between reflections
             
         Returns:
-            DataFrame with columns: id, text, sentiment, confidence, explanation
+            DataFrame with columns: id, text, ai_sentiment, ai_explanation, 
+                                   assignment_sentiment, assignment_explanation
         """
         results = []
         conversation_context = [] if use_context else None
         
         system_prompt = self._get_system_prompt()
         
-        for reflection in track(reflections, description="Sentiment analysis..."):
+        for reflection in track(reflections, description="Sentiment analysis (two dimensions)..."):
             try:
                 sentiment_result = self._analyze_single(
                     reflection,
@@ -44,23 +53,29 @@ class SentimentAnalyzer:
                     conversation_context
                 )
                 
-                results.append({
+                result_row = {
                     'id': reflection['id'],
-                    'text': reflection['text'][:200] + '...',
-                    'sentiment': sentiment_result['sentiment'],
-                    'confidence': sentiment_result['confidence'],
-                    'explanation': sentiment_result['explanation']
-                })
+                    'text': reflection['text'][:200] + '...'
+                }
+                
+                # Add results for each dimension
+                for dim in self.dimensions:
+                    dim_name = dim['name']
+                    result_row[f'{dim_name}_sentiment'] = sentiment_result.get(f'{dim_name}_sentiment', 'neutral')
+                    result_row[f'{dim_name}_explanation'] = sentiment_result.get(f'{dim_name}_explanation', '')
+                
+                results.append(result_row)
                 
             except Exception as e:
                 print(f"⚠️  Error at {reflection['id']}: {e}")
-                results.append({
+                error_row = {
                     'id': reflection['id'],
-                    'text': reflection['text'][:200] + '...',
-                    'sentiment': 'ERROR',
-                    'confidence': 0,
-                    'explanation': str(e)
-                })
+                    'text': reflection['text'][:200] + '...'
+                }
+                for dim in self.dimensions:
+                    error_row[f"{dim['name']}_sentiment"] = 'ERROR'
+                    error_row[f"{dim['name']}_explanation"] = str(e)
+                results.append(error_row)
         
         df = pd.DataFrame(results)
         print(f"\n✓ Sentiment analyzed for {len(df)} reflections")
@@ -95,50 +110,45 @@ class SentimentAnalyzer:
         return self._parse_sentiment(response['response'])
     
     def _get_system_prompt(self) -> str:
-        """System prompt for sentiment analysis"""
-        categories_str = ', '.join(self.categories)
-        
-        # Build category definitions dynamically based on config
-        category_definitions = []
-        category_meaning = {
-            'positive': 'enthusiasm, appreciation, optimism, emphasizing benefits',
-            'positief': 'enthusiasme, waardering, optimisme, nadruk op voordelen',
-            'negative': 'concerns, frustration, criticism, emphasizing drawbacks, fear',
-            'negatief': 'zorgen, frustratie, kritiek, nadruk op nadelen, angst',
-            'neutral': 'balanced, descriptive, both pros and cons, informative',
-            'neutraal': 'gebalanceerd, beschrijvend, zowel voor- als nadelen, informatief'
-        }
-        
-        for cat in self.categories:
-            meaning = category_meaning.get(cat.lower(), 'balanced perspective')
-            category_definitions.append(f"- {cat} = {meaning}")
-        
-        definitions_text = '\n'.join(category_definitions)
-        
-        return f"""You are an expert in sentiment analysis. Analyze the tone of student reflections about generative AI.
+        """System prompt for two-dimensional sentiment analysis"""
+        return """You are an expert in sentiment analysis. Analyze student reflections about generative AI from TWO different perspectives.
 
 IMPORTANT: Use this exact format without extra text or markdown:
 
-SENTIMENT: [choose from: {categories_str}]
-CONFIDENCE: [choose from: low, medium, high]
-EXPLANATION: [1 short sentence]
+AI_SENTIMENT: [positive/negative/neutral]
+AI_EXPLANATION: [one clear sentence explaining the student's attitude toward AI technology]
+
+ASSIGNMENT_SENTIMENT: [positive/negative/neutral]
+ASSIGNMENT_EXPLANATION: [one clear sentence explaining the student's attitude toward the assignment/task]
 
 Category definitions:
-{definitions_text}
 
-NOTE: If there are clearly positive or negative emotions, do NOT use neutral!"""
+1. ATTITUDE TOWARD AI TECHNOLOGY (AI_SENTIMENT):
+   - positive: sees AI as valuable, helpful, promising; emphasizes benefits and opportunities
+   - negative: concerned about AI, critical, emphasizes risks, drawbacks, fears, or limitations
+   - neutral: balanced view with both benefits and concerns equally weighted, or purely descriptive
+
+2. ATTITUDE TOWARD THE ASSIGNMENT (ASSIGNMENT_SENTIMENT):
+   - positive: found assignment valuable, educational, worthwhile, insightful
+   - negative: frustrated with assignment, critical of the task itself, questions its value
+   - neutral: descriptive about assignment without clear positive or negative evaluation
+
+IMPORTANT: These are TWO SEPARATE dimensions. A student can be positive about AI but neutral about the assignment, or vice versa."""
     
     def _build_prompt(self, text: str) -> str:
         """Build prompt for single reflection"""
-        return f"""Analyze the general tone/sentiment of this student reflection about generative AI:
+        return f"""Analyze this student reflection about generative AI and determine TWO separate attitudes:
+
+1. The student's attitude toward AI TECHNOLOGY itself (helpful vs problematic)
+2. The student's attitude toward THIS ASSIGNMENT/TASK (valuable learning experience vs not)
 
 REFLECTION:
 {text}
 
-Determine the sentiment:"""
+Provide your analysis:"""
     
     def _parse_sentiment(self, response: str) -> Dict[str, Any]:
-        """Parse sentiment from LLM response"""
+        """Parse two-dimensional sentiment from LLM response"""
         lines = response.strip().split('\n')
         
         # Translation mapping for English <-> Dutch
@@ -151,13 +161,11 @@ Determine the sentiment:"""
             'neutraal': 'neutral'
         }
         
-        # Default to first category from config
-        default_sentiment = self.categories[0] if self.categories else 'neutral'
-        
         result = {
-            'sentiment': default_sentiment,
-            'confidence': 'medium',
-            'explanation': ''
+            'ai_technology_sentiment': 'neutral',
+            'ai_technology_explanation': '',
+            'assignment_sentiment': 'neutral',
+            'assignment_explanation': ''
         }
         
         for line in lines:
@@ -165,48 +173,52 @@ Determine the sentiment:"""
             # Remove markdown formatting (**, *, etc)
             line = line.replace('**', '').replace('*', '')
             
-            if 'SENTIMENT:' in line.upper():
-                sentiment = line.split(':', 1)[1].strip().lower() if ':' in line else line.lower()
-                # Translate to English first if needed
+            # Parse AI sentiment
+            if 'AI_SENTIMENT:' in line.upper():
+                sentiment = line.split(':', 1)[1].strip().lower() if ':' in line else ''
                 sentiment_normalized = translation_map.get(sentiment, sentiment)
-                # Validate against categories (check both original and normalized)
-                for cat in self.categories:
-                    if cat.lower() in sentiment or cat.lower() in sentiment_normalized:
-                        result['sentiment'] = cat
-                        break
-                # If no match found, try direct translation
-                if result['sentiment'] == default_sentiment and sentiment_normalized in translation_map.values():
-                    # Find matching category
-                    for cat in self.categories:
-                        if translation_map.get(cat.lower(), cat.lower()) == sentiment_normalized:
-                            result['sentiment'] = cat
-                            break
+                if sentiment_normalized in ['positive', 'negative', 'neutral']:
+                    result['ai_technology_sentiment'] = sentiment_normalized
             
-            elif 'CONFIDENCE:' in line.upper():
-                conf_text = line.split(':', 1)[1].strip().lower() if ':' in line else ''
-                result['confidence'] = conf_text
-            
-            elif 'EXPLANATION:' in line.upper() or 'UITLEG:' in line.upper():
+            # Parse AI explanation
+            elif 'AI_EXPLANATION:' in line.upper():
                 expl_text = line.split(':', 1)[1].strip() if ':' in line else ''
-                result['explanation'] = expl_text
+                result['ai_technology_explanation'] = expl_text
             
-            # Also handle cases without labels
-            elif not result['explanation'] and len(line) > 20:
-                result['explanation'] = line
+            # Parse assignment sentiment
+            elif 'ASSIGNMENT_SENTIMENT:' in line.upper():
+                sentiment = line.split(':', 1)[1].strip().lower() if ':' in line else ''
+                sentiment_normalized = translation_map.get(sentiment, sentiment)
+                if sentiment_normalized in ['positive', 'negative', 'neutral']:
+                    result['assignment_sentiment'] = sentiment_normalized
+            
+            # Parse assignment explanation
+            elif 'ASSIGNMENT_EXPLANATION:' in line.upper():
+                expl_text = line.split(':', 1)[1].strip() if ':' in line else ''
+                result['assignment_explanation'] = expl_text
         
         return result
     
     def _print_summary(self, df: pd.DataFrame):
-        """Print sentiment summary statistics"""
+        """Print sentiment summary statistics for both dimensions"""
         print("\n📊 Sentiment Summary:")
-        print("-" * 40)
+        print("=" * 60)
         
-        for category in self.categories:
-            count = len(df[df['sentiment'] == category])
-            percentage = (count / len(df)) * 100 if len(df) > 0 else 0
-            print(f"  {category.capitalize():12s}: {count:3d} ({percentage:5.1f}%)")
+        for dim in self.dimensions:
+            dim_name = dim['name']
+            dim_label = dim['label']
+            sentiment_col = f'{dim_name}_sentiment'
+            
+            print(f"\n{dim_label}:")
+            print("-" * 40)
+            
+            if sentiment_col in df.columns:
+                for category in ['positive', 'negative', 'neutral']:
+                    count = len(df[df[sentiment_col] == category])
+                    percentage = (count / len(df)) * 100 if len(df) > 0 else 0
+                    print(f"  {category.capitalize():12s}: {count:3d} ({percentage:5.1f}%)")
         
-        print("-" * 40)
+        print("=" * 60)
     
     def save_results(self, df: pd.DataFrame, output_path: str):
         """Save results to CSV"""

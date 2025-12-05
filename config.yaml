@@ -42,6 +42,14 @@ output:
 analysis:
   keywords_per_reflection: 5
   sentiment_categories: ["positive", "negative", "neutral"]
+  # Two-dimensional sentiment analysis
+  sentiment_dimensions:
+    - name: "ai_technology"
+      label: "Attitude toward AI"
+      categories: ["positive", "negative", "neutral"]
+    - name: "assignment"
+      label: "Attitude toward Assignment"
+      categories: ["positive", "negative", "neutral"]
   memo_sentences: 3
   target_themes: 8  # Target number of themes (6-10 range)
   

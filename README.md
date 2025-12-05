@@ -37,7 +37,7 @@ Everything outputs to CSV files, and there's a separate script (`analyze_results
 Clone the repo and activate the virtual environment:
 ```bash
 git clone <repository-url>
-cd Laurence
+cd Analysis-of-Student-Reflections-on-GenAI-in-Academic-Work
 source myenv/bin/activate  # or myenv\Scripts\activate on Windows
 pip install -r requirements.txt
 ```
@@ -76,7 +76,7 @@ Edit `config.yaml` to switch between Ollama and Azure OpenAI, adjust model param
 ## Project Structure
 
 ```
-Laurence/
+Analysis-of-Student-Reflections-on-GenAI-in-Academic-Work/
 ├── data/reflections/        # Input data goes here
 ├── src/                     # Analysis step modules
 │   ├── step1_keywords.py
